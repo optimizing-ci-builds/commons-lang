@@ -69,6 +69,7 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         files: ./target/site/jacoco/jacoco.xml
+    - run: cat /home/runner/inotify-logs.csv
     - run: touch starting_finished_finished_8979874
     - run: rm starting_finished_finished_8979874
     - uses: jannekem/run-python-script-action@v1
