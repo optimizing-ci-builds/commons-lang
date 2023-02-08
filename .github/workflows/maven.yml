@@ -1,49 +1,200 @@
-# Licensed to the Apache Software Foundation (ASF) under one or more
-# contributor license agreements.  See the NOTICE file distributed with
-# this work for additional information regarding copyright ownership.
-# The ASF licenses this file to You under the Apache License, Version 2.0
-# (the "License"); you may not use this file except in compliance with
-# the License.  You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 name: Java CI
-
-on: [push, pull_request]
-
+on: [push]
+- push
+- pull_request
 permissions:
   contents: read
-
 jobs:
-  build:
-
+  build_java_8_experimental_False:
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        java: [ 8, 11, 17 ]
-        experimental: [false]
-#        include:
-#          - java: 18-ea
-#            experimental: true        
+        java:
+        - 8
+        experimental:
+        - false
     steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas
+        pip install numpy
+    - run: sudo apt update
+    - run: sudo apt install inotify-tools
+    - run: inotifywait -mr /home/runner/work/commons-lang/commons-lang/ --format '%T;%w;%f;%e' --timefmt %T -o /home/runner/inotify-logs.csv & echo 'basak'
+    - run: touch starting_buildjava8experimentalFalse_uses-checkout_18
+    - run: rm starting_buildjava8experimentalFalse_uses-checkout_18
     - uses: actions/checkout@v3.0.2
+    - run: touch starting_buildjava8experimentalFalse_uses-cache_19
+    - run: rm starting_buildjava8experimentalFalse_uses-cache_19
     - uses: actions/cache@v3.0.8
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+        restore-keys: '${{ runner.os }}-maven-
+
+          '
+    - run: touch starting_buildjava8experimentalFalse_SetupJDKmatrixjava_26
+    - run: rm starting_buildjava8experimentalFalse_SetupJDKmatrixjava_26
     - name: Set up JDK ${{ matrix.java }}
       uses: actions/setup-java@v3
       with:
-        distribution: 'temurin'      
+        distribution: temurin
         java-version: ${{ matrix.java }}
+    - run: touch starting_buildjava8experimentalFalse_BuildwithMaven_31
+    - run: rm starting_buildjava8experimentalFalse_BuildwithMaven_31
     - name: Build with Maven
       run: mvn -V -Ddoclint=all --file pom.xml --no-transfer-progress
+    - run: touch starting_finished_finished_8979874
+      if: always()
+    - run: rm starting_finished_finished_8979874
+      if: always()
+    - name: Execute py script # run file
+      if: always()
+      run: |
+        python .github/workflows/script.py
+    - name: Pushes analysis to another repository
+      if: always()
+      id: push_directory
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      with:
+        source-directory: 'optimizing-ci-builds-ci-analysis'
+        destination-github-username: 'UT-SE-Research'
+        destination-repository-name: 'ci-analyzes'
+        target-branch: '1675896667'
+        target-directory: 'commons-lang/.github/workflows/maven/buildjava8experimentalFalse'
+  build_java_11_experimental_False:
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      matrix:
+        java:
+        - 11
+        experimental:
+        - false
+    steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas
+        pip install numpy
+    - run: sudo apt update
+    - run: sudo apt install inotify-tools
+    - run: inotifywait -mr /home/runner/work/commons-lang/commons-lang/ --format '%T;%w;%f;%e' --timefmt %T -o /home/runner/inotify-logs.csv & echo 'basak'
+    - run: touch starting_buildjava11experimentalFalse_uses-checkout_43
+    - run: rm starting_buildjava11experimentalFalse_uses-checkout_43
+    - uses: actions/checkout@v3.0.2
+    - run: touch starting_buildjava11experimentalFalse_uses-cache_44
+    - run: rm starting_buildjava11experimentalFalse_uses-cache_44
+    - uses: actions/cache@v3.0.8
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: '${{ runner.os }}-maven-
+
+          '
+    - run: touch starting_buildjava11experimentalFalse_SetupJDKmatrixjava_51
+    - run: rm starting_buildjava11experimentalFalse_SetupJDKmatrixjava_51
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: ${{ matrix.java }}
+    - run: touch starting_buildjava11experimentalFalse_BuildwithMaven_56
+    - run: rm starting_buildjava11experimentalFalse_BuildwithMaven_56
+    - name: Build with Maven
+      run: mvn -V -Ddoclint=all --file pom.xml --no-transfer-progress
+    - run: touch starting_finished_finished_8979874
+      if: always()
+    - run: rm starting_finished_finished_8979874
+      if: always()
+    - name: Execute py script # run file
+      if: always()
+      run: |
+        python .github/workflows/script.py
+    - name: Pushes analysis to another repository
+      if: always()
+      id: push_directory
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      with:
+        source-directory: 'optimizing-ci-builds-ci-analysis'
+        destination-github-username: 'UT-SE-Research'
+        destination-repository-name: 'ci-analyzes'
+        target-branch: '1675896667'
+        target-directory: 'commons-lang/.github/workflows/maven/buildjava11experimentalFalse'
+  build_java_17_experimental_False:
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      matrix:
+        java:
+        - 17
+        experimental:
+        - false
+    steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas
+        pip install numpy
+    - run: sudo apt update
+    - run: sudo apt install inotify-tools
+    - run: inotifywait -mr /home/runner/work/commons-lang/commons-lang/ --format '%T;%w;%f;%e' --timefmt %T -o /home/runner/inotify-logs.csv & echo 'basak'
+    - run: touch starting_buildjava17experimentalFalse_uses-checkout_68
+    - run: rm starting_buildjava17experimentalFalse_uses-checkout_68
+    - uses: actions/checkout@v3.0.2
+    - run: touch starting_buildjava17experimentalFalse_uses-cache_69
+    - run: rm starting_buildjava17experimentalFalse_uses-cache_69
+    - uses: actions/cache@v3.0.8
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: '${{ runner.os }}-maven-
+
+          '
+    - run: touch starting_buildjava17experimentalFalse_SetupJDKmatrixjava_76
+    - run: rm starting_buildjava17experimentalFalse_SetupJDKmatrixjava_76
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: ${{ matrix.java }}
+    - run: touch starting_buildjava17experimentalFalse_BuildwithMaven_81
+    - run: rm starting_buildjava17experimentalFalse_BuildwithMaven_81
+    - name: Build with Maven
+      run: mvn -V -Ddoclint=all --file pom.xml --no-transfer-progress
+    - run: touch starting_finished_finished_8979874
+      if: always()
+    - run: rm starting_finished_finished_8979874
+      if: always()
+    - name: Execute py script # run file
+      if: always()
+      run: |
+        python .github/workflows/script.py
+    - name: Pushes analysis to another repository
+      if: always()
+      id: push_directory
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      with:
+        source-directory: 'optimizing-ci-builds-ci-analysis'
+        destination-github-username: 'UT-SE-Research'
+        destination-repository-name: 'ci-analyzes'
+        target-branch: '1675896667'
+        target-directory: 'commons-lang/.github/workflows/maven/buildjava17experimentalFalse'
+
