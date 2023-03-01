@@ -15,7 +15,7 @@
 
 name: Coverage
 
-on: [push, pull_request]
+on: [push] # one-run-to-find-them-all
 
 permissions:
   contents: read
