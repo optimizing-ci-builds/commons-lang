@@ -62,7 +62,6 @@ jobs:
     - run: rm starting_build_BuildwithMaven_44
     - name: Build with Maven
       run: |
-        cat /home/runner/work/commons-lang/commons-lang/target/rat.txt
         mvn -V test jacoco:report --file pom.xml --no-transfer-progress
         cat /home/runner/work/commons-lang/commons-lang/target/rat.txt
 
